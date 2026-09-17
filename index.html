@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>瑜家 嘉義包棟民宿 五星級農莊villa｜官方 LINE 訂房</title>
-<meta name="description" content="嘉義中埔千坪農莊別墅，整棟出租。16 人以內平日包棟 45,000 元，最多可住 40 人。加官方 LINE @yogahometw 直接訂房，不收平台費用。">
+<meta name="description" content="嘉義中埔千坪農莊別墅，整棟出租。16 人以內平日包棟 45,000 元，最多可住 40 人。加官方 LINE @753pksda 直接訂房，不收平台費用。">
 <meta name="theme-color" content="#2B211D">
 <meta property="og:title" content="瑜家 嘉義包棟民宿 五星級農莊villa">
-<meta property="og:description" content="嘉義中埔千坪農莊。加官方 LINE @yogahometw 直接訂房。">
+<meta property="og:description" content="嘉義中埔千坪農莊。加官方 LINE @753pksda 直接訂房。">
 <meta property="og:image" content="house.jpg">
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -180,7 +180,7 @@
   <p class="tagline">嘉義中埔千坪農莊<br>空房、報價都在 LINE 直接回覆。</p>
   <div class="hero-cta">
     <a class="line-btn" id="heroBtn" data-line="hero"></a>
-    <p class="cta-sub">LINE ID <b>@yogahometw</b><br>直接跟瑜家訂，不收平台費用</p>
+    <p class="cta-sub">LINE ID <b>@753pksda</b><br>直接跟瑜家訂，不收平台費用</p>
   </div>
   <ul class="facts">
     <li>16 人包棟 45,000 起</li>
@@ -239,7 +239,7 @@
     <h2>訂房流程</h2>
     <p class="lead">請勿在訂房平台下訂，平台無法計算加人費用。</p>
     <ol class="steps">
-      <li><div><strong>加官方 LINE 詢價</strong><span>ID <b>@yogahometw</b>，提供以下資訊：</span>
+      <li><div><strong>加官方 LINE 詢價</strong><span>ID <b>@753pksda</b>，提供以下資訊：</span>
         <ul class="asklist">
           <li>大人＋10 歲以上小孩人數、未滿 10 歲小孩人數</li>
           <li>入住日期、住幾晚</li>
@@ -316,7 +316,7 @@
    ============================================================ */
 const CONFIG = {
   gtmId: "GTM-5BT5MC4R",                    // ← 填入 GTM-XXXXXXX，空白就不載入 GTM
-  lineId: "@yogahometw",
+  lineId: "@753pksda",
   // 客人點按鈕後，LINE 聊天框會自動帶入這段訊息，{src} 會換成來源代號
   lineMessage: "【官網{src}】你好，我想詢問瑜家包棟的空房和報價",
   // 網址 utm_source 對應的來源代號，對不到的一律用 W
@@ -350,7 +350,13 @@ if (/^GTM-[A-Z0-9]+$/.test(CONFIG.gtmId)) {
   } catch (e) {}
   const srcCode = CONFIG.sourceCodes[utmSource] || "W";
   const message = CONFIG.lineMessage.replace("{src}", srcCode);
-  const lineUrl = "https://line.me/R/oaMessage/" + encodeURIComponent(CONFIG.lineId) + "/?" + encodeURIComponent(message);
+  // Phones open the chat with the prefilled message; computers can't (LINE for PC
+  // doesn't support it), so they get LINE's add-friend page with a QR code instead.
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  const lineUrl = isMobile
+    ? "https://line.me/R/oaMessage/" + CONFIG.lineId + "/?" + encodeURIComponent(message)
+    : "https://line.me/R/ti/p/" + CONFIG.lineId;
 
   document.querySelectorAll("[data-line]").forEach((a) => {
     a.href = lineUrl; a.target = "_blank"; a.rel = "noopener";
